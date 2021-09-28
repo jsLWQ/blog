@@ -1,6 +1,6 @@
 import React, { Component, Fragment, useState } from 'react';
 import Head from 'next/head'
-import { Row, Col,  List } from 'antd'
+import { Row, Col, List, Breadcrumb } from 'antd'
 
 import {
   CalendarFilled,
@@ -13,9 +13,7 @@ import Author from '../components/Author.js';
 import Advert from '../components/Advert.js';
 import Footer from '../components/Footer.js';
 
-// import '../static/style/pages/index.css'
-
-const Home = () => {
+const Lists = () => {
 
   const [ mylist , setMylist ] = useState(
     [
@@ -26,43 +24,51 @@ const Home = () => {
     ]
   )
 
+  return (
+    <Fragment>
+      <Head>
+        <title>List</title>
+      </Head>
+      <Header />
 
-    return (
-      <Fragment>
-        <Head>
-          <title>Home</title>
-        </Head>
-        <Header />
-        <Row className="comm-main" type="flex" justify="center">
-          <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={14}>
-            <div>    
-              <List
-                header={<div>最新日志</div>}
-                itemLayout="vertical"
-                dataSource={mylist}
-                renderItem={item => (
-                  <List.Item>
-                    <div className="list-title">{item.title}</div>
-                    <div className="list-icon">
-                      <span><CalendarFilled /> 2019-06-28</span>
-                      <span><FolderFilled /> 视频教程</span>
-                      <span><FireFilled /> 5498人</span>
-                    </div>
-                    <div className="list-context">{item.context}</div>  
-                  </List.Item>
-                )}
-              />    
+      <Row className="comm-main" type="flex" justify="center">
+        <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={14}>
+          <div>
+
+            <div className="bread-div">
+              <Breadcrumb>
+                <Breadcrumb.Item><a href="/">首页</a></Breadcrumb.Item>
+                <Breadcrumb.Item>视频列表</Breadcrumb.Item>
+              </Breadcrumb>
             </div>
-          </Col>
-          <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}>
-            {/* 个人简介 */}
-            <Author />
-            <Advert />
-          </Col>
-        </Row>
-        <Footer />
-      </Fragment>
-    )
+
+
+            <List
+              itemLayout="vertical"
+              dataSource={mylist}
+              renderItem={item => (
+                <List.Item>
+                  <div className="list-title">{item.title}</div>
+                  <div className="list-icon">
+                    <span><CalendarFilled /> 2019-06-28</span>
+                    <span><FolderFilled /> 视频教程</span>
+                    <span><FireFilled /> 5498人</span>
+                  </div>
+                  <div className="list-context">{item.context}</div>
+                </List.Item>
+              )}
+            />
+          </div>
+        </Col>
+        <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}>
+          {/* 个人简介 */}
+          <Author />
+          <Advert />
+        </Col>
+      </Row>
+      <Footer />
+    </Fragment>
+  )
 }
 
-export default Home;
+export default Lists;
