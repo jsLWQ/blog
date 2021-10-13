@@ -1,43 +1,63 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import '../static/style/components/header.css'
-
+import Link from 'next/link';
+import Router from 'next/router';
 import { Row, Col, Menu } from 'antd'
-import {
-  HomeFilled,
-  PlayCircleFilled,
-  CameraFilled
-} from '@ant-design/icons';
+import  * as Icon from '@ant-design/icons';
 
-class Header extends Component {
-  render() {
-    return (
-      <div className="header">
-        <Row type="flex" justify="center">
-          <Col xs={24} sm={24} md={10} lg={15} xl={12}>
-            <span className="header-logo">XX</span>
-            <span className="header-txt">专注前端开发</span>
-          </Col>
+import { getTypeInfo } from '../apis/apiUrl'
 
-          <Col className="memu-div" xs={0} sm={0} md={14} lg={8} xl={6}>
-            <Menu mode="horizontal">
-              <Menu.Item key="home">
-                <HomeFilled />
-                首页
-              </Menu.Item>
-              <Menu.Item key="video">
-                <PlayCircleFilled />
-                视频
-              </Menu.Item>
-              <Menu.Item key="life">
-                <CameraFilled />
-                生活
-              </Menu.Item>
-            </Menu>
-          </Col>
-        </Row>
-      </div>
-    )
+const Header = () => {
+
+  const [ navArray, setNavArray ] = useState([])
+
+  useEffect(async () => {
+    const res = await getTypeInfo()
+    console.log('res',res)
+    setNavArray(res.data.data)
+  }, [])
+  
+  
+  const hadnleClick = (e) => {
+    console.log('e',e)
+    if(e.key == 1) {
+      Router.push('/')
+    }else {
+      Router.push(`/list?id=${ e.key }`)
+    }
   }
+    // const { HomeFilled, PlayCircleFilled, CameraFilled } = ICON
+  return (
+    <div className="header">
+      <Row type="flex" justify="center">
+        <Col xs={24} sm={24} md={10} lg={13} xl={11}>
+          <span className="header-logo">
+            <Link href={{ pathname: '/' }}>
+              XX
+            </Link>
+          </span>
+          <span className="header-txt">专注前端开发</span>
+        </Col>
+
+        <Col className="memu-div" xs={0} sm={0} md={14} lg={10} xl={7}>
+          <Menu mode="horizontal" onClick={ hadnleClick }>
+            {
+              navArray.map(item => {
+                return (
+                  <Menu.Item key={ item.id }>
+                    {
+                      React.createElement(Icon[item.icon])
+                    }
+                    { item.typeName }
+                  </Menu.Item>
+                )
+              })
+            }
+          </Menu>
+        </Col>
+      </Row>
+    </div>
+  )
 }
 
 export default Header;

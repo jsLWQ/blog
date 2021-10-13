@@ -22,6 +22,11 @@ body{
   color: #1e90ff;
   padding: 0 0.5rem;
 }
+
+.list-title:hover {
+  cursor: pointer;
+}
+
 .list-context{
   color:#777;
   padding:.5rem;
